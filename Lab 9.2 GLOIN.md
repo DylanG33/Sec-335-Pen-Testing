@@ -42,10 +42,14 @@ I was presented with tons of directories to explore and multiple options to choo
 - After multiple failed attempts with Hydra and other programs, I decided to go back to some old labs to get any ideas for creating a foothold. With the help of last year's tech journal and some
 friends nudging me in the right direction I found out i could use SQL Injeection. Using 9.1 Lab I was to whip up this URL: http://127.0.0.1/entrance_exam/admin/view_enrollee.php?id=1'+UNION+SELECT+1,2,3,4,5,6,password,username,9,10,11,12,13,14,15+FROM+admin_list;
 
-#### **Screenshot: Foothold Process**  
-![Foothold Process](path/to/foothold_screenshot.png)  
-**Description:**  
-*(Explain the process depicted in the screenshot and how it contributed to the foothold.)*
+![201966531-392f5726-a013-4aec-af3c-9153fb271ea6](https://github.com/user-attachments/assets/a5546dc5-858d-43b2-a037-526cdb5f6caf)
+
+#### **The Hash!**  
+- Once I discovered the hash I immeditalitly reconginzied it and entered it into one of the first google search results for "hash calculator"
+- Sure enough after a few tries I was able to get this:
+```
+Moria2Featn6
+```
 
 ---
 
