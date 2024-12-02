@@ -48,50 +48,40 @@ friends nudging me in the right direction I found out i could use SQL Injeection
 - Once I discovered the hash I immeditalitly reconginzied it and entered it into one of the first google search results for "hash calculator"
 - Sure enough after a few tries I was able to get this:
 ```
-Moria2Featn6
+Moria2Featon6
 ```
-
+![access](https://github.com/user-attachments/assets/7268e7fe-f91e-408f-96b3-70a0a64978b0)
+Just gonna leave this here :)
 ---
 
 ### **How You Achieved Root/Administrative Level Compromise**
 - **Steps to Privilege Escalation:**  
-  *(Detail the steps, tools, and commands used to gain root or administrative access.)*
+  1. logged onto Windows VM
+  2. Loaded up RDP and logged into with the credentials Administrator and Moria2Featon6
+  3. typed whoami and hostname, as well as ipconfig to verify all the credentials were legit and that I was administrator
+![proof](https://github.com/user-attachments/assets/7648d74f-a6bf-47ad-8e9d-317d219ef59a)
 
-#### **Screenshot: Root Access Process**  
-![Root Access Process](path/to/root_access_screenshot.png)  
-**Description:**  
-*(Provide context for the screenshot, describing how root/admin access was achieved.)*
+
 
 ---
 
 ### **User Flag**
-- **Location of User Flag:**  
-  *(Specify where the user flag was found and its contents.)*
-
-#### **Screenshot: User Flag**  
-![User Flag](path/to/user_flag_screenshot.png)  
-**Description:**  
-*(Explain the significance of the user flag and how you obtained it.)*
+- After a good 30 minuets of search I was able to find the userflag in its own directory and opened it in notebook++
+  ![userflag](https://github.com/user-attachments/assets/d311abe6-2af0-456b-90d7-39fa5330e830)
 
 ---
 
 ### **Root Flag**
-- **Location of Root Flag:**  
-  *(Specify where the root flag was found and its contents.)*
-
-#### **Screenshot: Root Flag**  
-![Root Flag](path/to/root_flag_screenshot.png)  
-**Description:**  
-*(Describe the importance of the root flag and how you accessed it.)*
+- shortly after I was able to spot the root flag with my knowledge of the directories now
+![rootflag](https://github.com/user-attachments/assets/bb1d8105-401a-4ee8-bab3-9ecf219833df)
 
 ---
 
 ### **How Might the Vulnerabilities Be Mitigated by the Systems Administrator and Developer?**
-- **Mitigation Strategies:**  
-  *(List specific actions the system administrator or developer could take to mitigate the vulnerabilities discovered, such as patching software, implementing security best practices, or changing configurations.)*
+- This system had significant vulnerabilities, including the reuse of passwords and an SQL injection flaw. To address the SQL injection issue, input validation and sanitization of URL requests are essential before treating them as trustworthy. Furthermore, implementing unique passwords for each credential ensures that if an attacker compromises one password, it cannot be reused across multiple applications.
 
 ---
 
 ## **Additional Notes/Reflections**
-- **Reflections:**  
-  *(Provide insights on what you learned, challenges faced, or observations made during the lab.)*
+- **Reflections:**
+Overall this lab was really so much fun and even though it took countless hours I had the most fun learning compared to any lab I have been tested n thus far in Cyber classes. I have much better knowledge of directories and SQL Injection since I got to put it to the test. As far as commands go, I've been getting the hang of new ones quite easily but it can take me a couple tries to adjust. Most of the time I would be really excited after getting to a new part in the lab and then I would be just stuck and not know where to go after. 
